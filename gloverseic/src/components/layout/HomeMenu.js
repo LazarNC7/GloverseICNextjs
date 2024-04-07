@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import MenuItem from "src/components/menu/MenuItem";
+import MenuItem from "../menu/MenuItem";
 import SectionHeaders from "src/components/layout/SectionHeaders";
 import Step1 from '../services/Step1';
 import Step2 from '../services/Step2';
