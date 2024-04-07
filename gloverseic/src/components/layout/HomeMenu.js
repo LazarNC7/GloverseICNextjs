@@ -1,9 +1,17 @@
 import Image from 'next/image';
+<<<<<<< HEAD
 import MenuItem from "src/components/menu/MenuItem";
 import SectionHeaders from "src/components/layout/SectionHeaders";
 import Step1 from '../services/Step1';
 import Step2 from '../services/Step2';
 import Step3 from '../services/Step3';
+=======
+
+import Step1 from '../services/Step1';
+import Step2 from '../services/Step2';
+import Step3 from '../services/Step3';
+import SectionHeaders from "./SectionHeaders";
+>>>>>>> 1870973580709f1d312463a6f8393c0093d12199
 export default function HomeMenu(){
     return(
         <section className="">

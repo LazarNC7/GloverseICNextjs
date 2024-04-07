@@ -1,9 +1,17 @@
 import {MongoDBAdapter} from "@auth/mongodb-adapter";
+<<<<<<< HEAD
 import clientPromise from "@/libs/mongoConnect";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import mongoose from "mongoose";
 import {User} from "@/app/models/User";
+=======
+import clientPromise from "/../../libs/mongoConnect";
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import mongoose from "mongoose";
+import {User} from "/../app/models/User";
+>>>>>>> 1870973580709f1d312463a6f8393c0093d12199
 import bcrypt from "bcrypt";
 
 export const authOptions = {

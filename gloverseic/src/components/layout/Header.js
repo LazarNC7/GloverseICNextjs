@@ -1,10 +1,20 @@
 'use client';
+<<<<<<< HEAD
 import {CartContext} from "@/components/AppContext";
 import Bars2 from "@/components/icons/Bars2";
 import ShoppingCart from "@/components/icons/ShoppingCart";
 import {signOut, useSession} from "next-auth/react";
 import Link from "next/link";
 import {useContext, useState} from "react";
+=======
+
+import {signOut, useSession} from "next-auth/react";
+import Link from "next/link";
+import {useContext, useState} from "react";
+import {CartContext} from "../AppContext";
+import ShoppingCart from "../icons/ShoppingCart";
+import Bars2 from "../icons/Bars2";
+>>>>>>> 1870973580709f1d312463a6f8393c0093d12199
 
 function AuthLinks({status, userName}) {
     if (status === 'authenticated') {

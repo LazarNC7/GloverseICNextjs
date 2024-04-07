@@ -1,5 +1,9 @@
 import Image from 'next/image';
+<<<<<<< HEAD
 import Right from "src/components/icons/Right";
+=======
+import Right from "../icons/Right";
+>>>>>>> 1870973580709f1d312463a6f8393c0093d12199
 
 export default function Hero(){
     return(
