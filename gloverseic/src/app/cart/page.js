@@ -1,0 +1,165 @@
+'use client';
+
+import Image from "next/image";
+import {useContext, useEffect, useState} from "react";
+import toast from "react-hot-toast";
+import { init } from 'emailjs-com';
+import emailjs from "emailjs-com"
+import {useSession} from "next-auth/react";
+import {CartContext} from "../../components/AppContext";
+import {useProfile} from "../../components/UseProfile";
+import SectionHeaders from "../../components/layout/SectionHeaders";
+import CartProduct from "../../components/menu/CartProduct";
+import AddressInputs from "../../components/layout/AddressInputs";
+
+init(process.env.EMAILJS_PK);
+
+export default function CartPage() {
+    const session = useSession();
+    const {cartProducts,removeCartProduct} = useContext(CartContext);
+    const [address, setAddress] = useState({});
+    const {data:profileData} = useProfile();
+    const [user, setUser] = useState(null);
+  const {status} = session;
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      fetch('/api/profile').then(response => {
+        response.json().then(data => {
+          setUser(data);
+          
+        })
+      });
+    }
+  }, [session, status]);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            if (window.location.href.includes('canceled=1')) {
+                toast.error('Payment failed 😔');
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (profileData?.city) {
+            const {phone, streetAddress, city, postalCode, country} = profileData;
+            const addressFromProfile = {
+                phone,
+                streetAddress,
+                city,
+                postalCode,
+                country
+            };
+            setAddress(addressFromProfile);
+        }
+    }, [profileData]);
+
+    let subtotal = 0;
+    for (const p of cartProducts) {
+        subtotal += cartProductPrice(p);
+    }
+    function handleAddressChange(propName, value) {
+        setAddress(prevAddress => ({...prevAddress, [propName]:value}));
+    }
+    async function proceedToCheckout(ev) {
+        ev.preventDefault();
+       
+
+        const promise = new Promise((resolve, reject) => {
+            fetch('/api/checkout', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                    address,
+                    cartProducts,
+                }),
+            }).then(async (response) => {
+                if (response.ok) {
+                    resolve();
+                   
+                    window.location = await response.json();
+                } else {
+                    reject();
+                }
+            });
+        });
+
+        await toast.promise(promise, {
+            loading: 'Preparing your order...',
+            success: 'Redirecting to payment...',
+            error: 'Something went wrong... Please try again later',
+        })
+    }
+
+    if (cartProducts?.length === 0) {
+        return (
+            <section className="mt-8 text-center">
+                <SectionHeaders mainHeader="Cart" />
+                <p className="mt-4">Your shopping cart is empty 😔</p>
+            </section>
+        );
+    }
+
+    function sendEmail() {
+        const templateParams = {
+        
+            email: user.email,
+            message: 'Payment made',
+            contact_number: Math.random() * 100000 | 0,
+        };
+    
+        emailjs.send('contact_service1', 'contact_form', templateParams, "GYqmdW7k8hULCJTyi")
+            .then(function(response) {
+                console.log('Email sent!', response);
+                toast.success('Payment successful! Email sent.');
+            }, function(error) {
+                console.error('Email failed to send...', error);
+                toast.error('Payment successful, but email failed to send.');
+            });
+    }
+
+    return (
+        <section className="mt-8">
+            <div className="text-center">
+                <SectionHeaders mainHeader="Cart" />
+            </div>
+            <div className="mt-8 grid gap-8 grid-cols-2">
+                <div>
+                    {cartProducts?.length === 0 && (
+                        <div>No products in your shopping cart</div>
+                    )}
+                    {cartProducts?.length > 0 && cartProducts.map((product) => (
+                        <CartProduct
+                            key={product._id}
+                            product={product}
+                            onRemove={removeCartProduct}
+                        />
+                    ))}
+                    <div className="py-2 pr-16 flex justify-end items-center">
+                        <div className="text-gray-500">
+                            Subtotal:<br />
+                            Delivery:<br />
+                            Total:
+                        </div>
+                        <div className="font-semibold pl-2 text-right">
+                            {subtotal} RON<br />
+                            15 RON<br />
+                            {subtotal + 15} RON
+                        </div>
+                    </div>
+                </div>
+                <div className="bg-gray-100 p-4 rounded-lg">
+                    <h2>Checkout</h2>
+                    <form onSubmit={proceedToCheckout}>
+                        <AddressInputs
+                            addressProps={address}
+                            setAddressProp={handleAddressChange}
+                        />
+                        <button type="submit" onClick={ sendEmail}>Pay {subtotal+15} RON</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    );
+}
