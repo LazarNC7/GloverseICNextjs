@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Right from "../icons/Right";
+import image1 from '../../../public/tomatoes.jpg'
 
 export default function Hero(){
     return(
@@ -16,7 +17,7 @@ export default function Hero(){
                 </div>
             </div>
             <div className="relative w-full h-full">
-                <Image src={'/tomatoes.jpg'} layout={'fill'} objectFit={'contain'} alt={'pizza'} />
+                {/* <Image src={image1} fill={true} style={{objectFit: "contain"}}/> */}
             </div>
 
         </section>
