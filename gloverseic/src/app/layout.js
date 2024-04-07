@@ -1,6 +1,6 @@
 import { Roboto } from 'next/font/google';
 import './globals.css';
-import Header from "src/components/layout/Header";
+import Header from "../components/layout/Header";
 import {SessionProvider} from "next-auth/react";
 import {AppProvider} from "@/components/AppContext";
 
