@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import MenuItem from "../menu/MenuItem";
-import SectionHeaders from "src/components/layout/SectionHeaders";
+import SectionHeaders from "../layout/SectionHeader";
 import Step1 from '../services/Step1';
 import Step2 from '../services/Step2';
 import Step3 from '../services/Step3';
