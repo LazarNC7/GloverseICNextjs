@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import {getServerSession} from "next-auth";
 import {Order} from "@/app/models/Order";
 import {authOptions} from "@/app/api/auth/[...nextauth]/options";
-import {isAdmin} from "@/app/api/isAdmin";
+import {isAdmin} from "../isAdimn";
 
 
 export async function GET(req) {
