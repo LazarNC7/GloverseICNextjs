@@ -19,9 +19,9 @@ export default function RootLayout({ children }) {
           <AppProvider>
               <Header />
               {children}
-              <footer className="border-t p-8 text-center text-grey-500 mt-16">
+              {/* <footer className="border-t p-8 text-center text-grey-500 mt-16">
                   &copy; 2023 All rights reserved
-              </footer>
+              </footer> */}
           </AppProvider>
       </main>
       </body>

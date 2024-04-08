@@ -27,26 +27,41 @@ export async function PUT(req) {
 }
 
 export async function GET(req) {
-  mongoose.connect(process.env.MONGO_URL);
-
-  const url = new URL(req.url);
-  const _id = url.searchParams.get('_id');
-
-  let filterUser = {};
-  if (_id) {
-    filterUser = {_id};
-  } else {
-    const session = await getServerSession(authOptions);
-    const email = session?.user?.email;
-    if (!email) {
+    mongoose.connect(process.env.MONGO_URL);
+  
+    const url = new URL(req.url);
+    const _id = url.searchParams.get('_id');
+  
+    let filterUser = {};
+    if (_id) {
+      filterUser = { _id };
+    } else {
+      const session = await getServerSession(authOptions);
+      const email = session?.user?.email;
+      if (!email) {
+        return Response.json({});
+      }
+      filterUser = { email };
+    }
+  
+    try {
+      const user = await User.findOne(filterUser).lean();
+      if (!user) {
+        return Response.json({});
+      }
+  
+      const userInfo = await UserInfo.findOne({ email: user.email }).lean();
+  
+      // Assuming 'image' field in user object is the AWS S3 URL
+      const userData = {
+        ...user,
+        ...userInfo,
+        image: user.image, // Ensure 'image' field contains AWS S3 URL
+      };
+  
+      return Response.json(userData);
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
       return Response.json({});
     }
-    filterUser = {email};
   }
-
-  const user = await User.findOne(filterUser).lean();
-  const userInfo = await UserInfo.findOne({email:user.email}).lean();
-
-  return Response.json({...user, ...userInfo});
-
-}
