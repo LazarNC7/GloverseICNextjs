@@ -1,9 +1,9 @@
 'use client';
-import EditableImage from "/../../components/layout/EditableImage";
-import InfoBox from "/../../components/layout/InfoBox";
-import SuccessBox from "/../../components/layout/SuccessBox";
-import UserForm from "/../../components/layout/UserForm";
-import UserTabs from "/../../components/layout/UserTabs";
+import EditableImage from "@/components/layout/EditableImage";
+import InfoBox from "@/components/layout/InfoBox";
+import SuccessBox from "@/components/layout/SuccessBox";
+import UserForm from "@/components/layout/UserForm";
+import UserTabs from "@/components/layout/UserTabs";
 import {useSession} from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";

@@ -1,7 +1,7 @@
 'use client';
-import AddressInputs from "/../../components/layout/AddressInputs";
-import EditableImage from "/../../components/layout/EditableImage";
-import {useProfile} from "/../../components/UseProfile";
+import AddressInputs from "../layout/AddressInputs";
+import EditableImage from "../layout/EditableImage";
+import {useProfile} from "../UseProfile";
 import {useState} from "react";
 
 export default function UserForm({user,onSave}) {
