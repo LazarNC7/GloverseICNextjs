@@ -12,6 +12,7 @@ export default function CartProduct({product,onRemove}) {
                 <h3 className="font-semibold">
                     {product.name}
                 </h3>
+                
                 {product.size && (
                     <div className="text-sm">
                         Size: <span>{product.size.name}</span>
