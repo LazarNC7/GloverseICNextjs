@@ -1,7 +1,7 @@
 
 import {Category} from "../../models/Category";
 import mongoose from "mongoose";
-import {isAdmin} from "../isAdimn";
+import {isAdmin} from "../isAdmin";
 
 export async function POST(req) {
   mongoose.connect(process.env.MONGO_URL);
