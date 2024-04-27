@@ -47,7 +47,7 @@ export function AppProvider({children}) {
             return newCartProducts;
         });
     
-        toast.success('Product removed');
+        // toast.success('Product removed');
     }
     
 
