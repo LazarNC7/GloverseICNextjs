@@ -18,6 +18,7 @@ export async function PUT(req) {
   mongoose.connect(process.env.MONGO_URL);
   if (await isAdmin()) {
     const {_id, ...data} = await req.json();
+    console.log(data);
     await MenuItem.findByIdAndUpdate(_id, data);
   }
   return Response.json(true);

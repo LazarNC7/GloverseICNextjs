@@ -3,13 +3,13 @@ import {Category} from "../../models/Category";
 import mongoose from "mongoose";
 import {isAdmin} from "../isAdmin";
 
+
+
 export async function POST(req) {
   mongoose.connect(process.env.MONGO_URL);
-  const {name, subcategories} = await req.json();
-  
+  const data = await req.json();
   if (await isAdmin()) {
-    const categoryDoc = await Category.create({name, subcategories});
-    console.log(name+" "+subcategories);
+    const categoryDoc = await Category.create(data);
     return Response.json(categoryDoc);
   } else {
     return Response.json({});
@@ -18,15 +18,13 @@ export async function POST(req) {
 
 export async function PUT(req) {
   mongoose.connect(process.env.MONGO_URL);
-  const {_id, name, subcategories} = await req.json();
-  
   if (await isAdmin()) {
-    await Category.updateOne({_id},  { name, subcategories  });
-    console.log(name+" "+subcategories);
+    const {_id, ...data} = await req.json();
+    console.log(data);
+    await Category.findByIdAndUpdate(_id, data);
   }
   return Response.json(true);
 }
-
 
 export async function GET() {
   mongoose.connect(process.env.MONGO_URL);
