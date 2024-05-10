@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Right from "../icons/Right";
 
+
 export default function Hero(){
     return(
         <section className="hero mt-4">
@@ -12,7 +13,7 @@ export default function Hero(){
                     <button className="bg-primary flex items-center gap-2 text-white px-6 py-2 rounded-full">
                         Order now <Right />
                     </button>
-
+                    
                 </div>
             </div>
             <div className="relative w-full h-full">
