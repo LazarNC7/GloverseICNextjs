@@ -5,9 +5,11 @@ import {isAdmin} from "../isAdmin";
 
 export async function POST(req) {
   mongoose.connect(process.env.MONGO_URL);
-  const {name} = await req.json();
+  const {name, subcategories} = await req.json();
+  
   if (await isAdmin()) {
-    const categoryDoc = await Category.create({name});
+    const categoryDoc = await Category.create({name, subcategories});
+    console.log(name+" "+subcategories);
     return Response.json(categoryDoc);
   } else {
     return Response.json({});
@@ -16,12 +18,15 @@ export async function POST(req) {
 
 export async function PUT(req) {
   mongoose.connect(process.env.MONGO_URL);
-  const {_id, name} = await req.json();
+  const {_id, name, subcategories} = await req.json();
+  
   if (await isAdmin()) {
-    await Category.updateOne({_id}, {name});
+    await Category.updateOne({_id},  { name, subcategories  });
+    console.log(name+" "+subcategories);
   }
   return Response.json(true);
 }
+
 
 export async function GET() {
   mongoose.connect(process.env.MONGO_URL);
