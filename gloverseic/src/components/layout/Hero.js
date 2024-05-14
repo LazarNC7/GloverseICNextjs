@@ -1,8 +1,11 @@
+'use client'
+
 import Image from 'next/image';
 import Right from "../icons/Right";
-import image1 from '../../../public/tomatoes.jpg'
+import React from 'react';
 
-export default function Hero(){
+
+export default function Hero() {
     return(
         <section className="hero mt-4">
             <div className="py-12 items-center">
@@ -10,14 +13,15 @@ export default function Hero(){
                     <span className="text-primary"> yourself</span></h1>
                 <p className="my-4 text-gray-500 text-sm">Pizza is the missing piece that makes everyday complete, a simple yet delicious joy</p>
                 <div className="flex gap-6 text-sm">
-                    <button className="bg-primary flex items-center gap-2 text-white px-6 py-2 rounded-full">
+                    <button className="bg-primary flex items-center gap-2 text-white px-6 py-2 rounded-full"
+                    onClick={event =>  window.location.href='/menu'}>
                         Order now <Right />
                     </button>
                     
                 </div>
             </div>
             <div className="relative w-full h-full">
-                {/* <Image src={image1} fill={true} style={{objectFit: "contain"}}/> */}
+                <Image src={'/tomatoes.jpg'} layout={'fill'} objectFit={'contain'} alt={'pizza'} />
             </div>
 
         </section>

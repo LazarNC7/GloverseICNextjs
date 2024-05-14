@@ -1,7 +1,7 @@
 
 import {Category} from "../../models/Category";
 import mongoose from "mongoose";
-import {isAdmin} from "../isAdmin";
+import {isAdmin} from "@/app/api/isAdmin";
 
 
 
