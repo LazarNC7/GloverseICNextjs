@@ -1,14 +1,7 @@
-
 import ChevronDown from "../icons/ChevronDown";
 import ChevronUp from "../icons/ChevronUp";
 import Plus from "../icons/Plus";
 import Trash from "../icons/Trash";
-
-import ChevronDown from "@/components/icons/ChevronDown";
-import ChevronUp from "@/components/icons/ChevronUp";
-import Plus from "@/components/icons/Plus";
-import Trash from "@/components/icons/Trash";
-
 import {useState} from "react";
 
 export default function MenuItemPriceProps({name,addLabel,props,setProps}) {
@@ -17,7 +10,7 @@ export default function MenuItemPriceProps({name,addLabel,props,setProps}) {
 
   function addProp() {
     setProps(oldProps => {
-      return [...oldProps, {name:'', price:0}];
+      return [...oldProps, {name:''}];
     });
   }
 
@@ -51,30 +44,25 @@ export default function MenuItemPriceProps({name,addLabel,props,setProps}) {
       </button>
       <div className={isOpen ? 'block' : 'hidden'}>
         {props?.length > 0 && props.map((size,index) => (
-          <div key={index} className="flex items-end gap-2">
+          <div>
             <div>
               <label>Name</label>
               <input type="text"
-                     placeholder="Size name"
+                     placeholder="Name"
                      value={size.name}
                      onChange={ev => editProp(ev, index, 'name')}
               />
             </div>
             <div>
-              <label>Extra price</label>
-              <input type="text" placeholder="Extra price"
-                     value={size.price}
-                     onChange={ev => editProp(ev, index, 'price')}
-              />
-            </div>
-            <div>
-              <button type="button"
-                      onClick={() => removeProp(index)}
-                      className="bg-white mb-2 px-2">
-                <Trash />
-              </button>
-            </div>
+            <button type="button"
+                    onClick={() => removeProp(index)}
+                    className="bg-white mb-2 px-2">
+              <Trash />
+            </button>
           </div>
+          </div>
+            
+         
         ))}
         <button
           type="button"

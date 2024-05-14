@@ -9,7 +9,6 @@ import bcrypt from "bcrypt";
 import {MongoDBAdapter} from "@auth/mongodb-adapter";
 import clientPromise from "@/libs/mongoConnect";
 import {authOptions} from "@/app/api/auth/[...nextauth]/options";
-
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST }
