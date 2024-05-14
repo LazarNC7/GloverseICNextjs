@@ -12,10 +12,13 @@ export default function CategoriesPage() {
   const { loading: profileLoading, data: profileData } = useProfile();
   const [editedCategory, setEditedCategory] = useState(null);
   const [subcat, setSubcat] = useState([]);  // Initialize as an empty array
-
+  
   useEffect(() => {
     fetchCategories();
   }, []);
+
+ 
+
 
   function fetchCategories() {
     fetch('/api/categories').then(res => {
@@ -25,6 +28,68 @@ export default function CategoriesPage() {
     });
   }
 
+  // useEffect(() => {
+  //   if (editedCategory) {
+  //     setSubcat(editedCategory.subcategories || []); // Update subcategories when a category is edited
+  //   } else {
+  //     setCategoryName('');
+  //     setSubcat([]); // Reset subcategories when no category is edited
+  //   }
+  // }, [editedCategory]);
+  
+  useEffect(() => {
+    if (subcat.length > 0) {
+      fetchCategories();
+      fetchProductDetails(); // Call this only after subcat has been updated
+    }
+  }, [subcat]); // Depend on subcat to trigger this effect
+  
+  async function fetchProductDetails() {
+    console.log("Subcat content:", subcat);  // Check if subcat is updated
+    if (subcat.length === 0) {
+      console.log('No subcategories to search');
+      return;
+    }
+  
+    const productUrls = subcat.map(id => `https://walmart.com/search?q=${id.name}`);
+    console.log("Generated URLs:", productUrls);
+  
+    const response = await fetch('/api/fetchFromWalmart', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(productUrls) // Send the full URLs to your API
+    });
+  
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Product details fetched successfully!', data);
+      setCategories(data); // Assuming you want to set these fetched details into some state to display
+    } else {
+      console.log('Failed to fetch product details', response.status);
+    }
+  }
+  
+
+  async function handleDeleteClick(_id) {
+    const promise = new Promise(async (resolve, reject) => {
+      const response = await fetch('/api/categories?_id='+_id, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+
+    await toast.promise(promise, {
+      loading: 'Deleting...',
+      success: 'Deleted',
+      error: 'Error',
+    });
+
+    fetchCategories();
+  }
   useEffect(() => {
     if (editedCategory) {
       setCategoryName(editedCategory.name);
@@ -63,10 +128,14 @@ export default function CategoriesPage() {
   }
 
   return (
+    
     <section className="mt-8 max-w-2xl mx-auto">
       <UserTabs isAdmin={true} />
+
       <form className="mt-8" onSubmit={handleCategorySubmit}>
+
         <div className="flex gap-2 items-end">
+          
           <div className="grow">
             <label>{editedCategory ? 'Update category' : 'New category name'}:</label>
             <input type="text" value={categoryName} onChange={ev => setCategoryName(ev.target.value)} />
@@ -92,7 +161,10 @@ export default function CategoriesPage() {
               <DeleteButton label="Delete" onDelete={() => handleDeleteClick(c._id)} />
             </div>
           </div>
+          
         ))}
+      <button onClick={fetchProductDetails}>Fetch Products from Walmart</button>
+
       </div>
     </section>
   );
