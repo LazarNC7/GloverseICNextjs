@@ -40,12 +40,12 @@ export default function CategoriesPage() {
   useEffect(() => {
     if (subcat.length > 0) {
       fetchCategories();
-      fetchProductDetails(); // Call this only after subcat has been updated
+      fetchProductDetails(); 
     }
-  }, [subcat]); // Depend on subcat to trigger this effect
+  }, [subcat]); 
   
   async function fetchProductDetails() {
-    console.log("Subcat content:", subcat);  // Check if subcat is updated
+    console.log("Subcat content:", subcat); 
     if (subcat.length === 0) {
       console.log('No subcategories to search');
       return;
@@ -57,13 +57,13 @@ export default function CategoriesPage() {
     const response = await fetch('/api/fetchFromWalmart', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(productUrls) // Send the full URLs to your API
+      body: JSON.stringify(productUrls) 
     });
   
     if (response.ok) {
       const data = await response.json();
       console.log('Product details fetched successfully!', data);
-      setCategories(data); // Assuming you want to set these fetched details into some state to display
+      setCategories(data); 
     } else {
       console.log('Failed to fetch product details', response.status);
     }
@@ -93,10 +93,10 @@ export default function CategoriesPage() {
   useEffect(() => {
     if (editedCategory) {
       setCategoryName(editedCategory.name);
-      setSubcat(editedCategory.subcategories || []); // Update subcategories when a category is edited
+      setSubcat(editedCategory.subcategories || []);
     } else {
       setCategoryName('');
-      setSubcat([]); // Reset subcategories when no category is edited
+      setSubcat([]); 
     }
   }, [editedCategory]);
 
@@ -163,7 +163,7 @@ export default function CategoriesPage() {
           </div>
           
         ))}
-      <button onClick={fetchProductDetails}>Fetch Products from Walmart</button>
+      
 
       </div>
     </section>
