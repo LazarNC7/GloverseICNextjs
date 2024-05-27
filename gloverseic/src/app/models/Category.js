@@ -6,6 +6,7 @@ const {  default: mongoose } = require("mongoose");
 const IngredientsSchema = new Schema({
   name: String,
   
+  
 });
 
 const CategorySchema = new Schema({
