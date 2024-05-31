@@ -1,7 +1,7 @@
 
 import {MenuItem} from "../../models/MenuItem";
 import mongoose from "mongoose";
-import {isAdmin} from "../isAdmin";
+import {isAdmin} from "@/app/api/isAdmin";
 
 export async function POST(req) {
   mongoose.connect(process.env.MONGO_URL);

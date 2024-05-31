@@ -1,4 +1,4 @@
-export default function SectionHeader({subHeader, mainHeader}){
+export default function SectionHeaders({subHeader, mainHeader}){
     return(
         <>
             <h3 className="text-gray-600 font-semibold leading-4">
