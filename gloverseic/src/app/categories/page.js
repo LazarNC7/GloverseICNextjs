@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {useProfile} from "@/components/UseProfile";
 import toast from "react-hot-toast";
 import MenuItemIngredients from "../../components/layout/MenuItemIngredients"
+import axios from 'axios'; // Ensure axios is imported
 
 export default function CategoriesPage() {
   const [categoryName, setCategoryName] = useState('');
@@ -40,34 +41,42 @@ export default function CategoriesPage() {
   useEffect(() => {
     if (subcat.length > 0) {
       fetchCategories();
-      fetchProductDetails(); // Call this only after subcat has been updated
+      fetchProductDetails(); 
     }
-  }, [subcat]); // Depend on subcat to trigger this effect
+  }, [subcat]); 
   
+
   async function fetchProductDetails() {
-    console.log("Subcat content:", subcat);  // Check if subcat is updated
-    if (subcat.length === 0) {
-      console.log('No subcategories to search');
-      return;
-    }
+      if (subcat.length === 0) {
+          console.log('No subcategories to search');
+          return;
+      }
   
-    const productUrls = subcat.map(id => `https://walmart.com/search?q=${id.name}`);
-    console.log("Generated URLs:", productUrls);
+      const productRequests = subcat.map(sub => `https://walmart.com/search?q=${sub.name}`);
+      console.log("Sending product search requests:", productRequests);
   
-    const response = await fetch('/api/fetchFromWalmart', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(productUrls) // Send the full URLs to your API
-    });
+      try {
+          const response = await axios.post('/api/fetchFromWalmart', productRequests, {
+              headers: { 'Content-Type': 'application/json' }
+          });
   
-    if (response.ok) {
-      const data = await response.json();
-      console.log('Product details fetched successfully!', data);
-      setCategories(data); // Assuming you want to set these fetched details into some state to display
-    } else {
-      console.log('Failed to fetch product details', response.status);
-    }
+          if (response.status === 200) {
+              const data = await response.data;
+              console.log('Product details fetched successfully!', data);
+  
+              const updatedSubcat = subcat.map(sub => ({
+                ...sub,
+                productName: data.find(item => item.name.toLowerCase() === sub.name.toLowerCase())?.name || sub.productName // Match by lowercase comparison
+            }));
+              setSubcat(updatedSubcat);
+          } else {
+              console.log('Failed to fetch product details', response.status);
+          }
+      } catch (error) {
+          console.error('Failed to fetch product details', error.response?.data || error.message);
+      }
   }
+  
   
 
   async function handleDeleteClick(_id) {
@@ -93,10 +102,10 @@ export default function CategoriesPage() {
   useEffect(() => {
     if (editedCategory) {
       setCategoryName(editedCategory.name);
-      setSubcat(editedCategory.subcategories || []); // Update subcategories when a category is edited
+      setSubcat(editedCategory.subcategories || []);
     } else {
       setCategoryName('');
-      setSubcat([]); // Reset subcategories when no category is edited
+      setSubcat([]); 
     }
   }, [editedCategory]);
 
